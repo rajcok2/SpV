@@ -1,5 +1,5 @@
 ## Predmet
-Softver pre vzdelavanie
+Softvér pre vzdelávanie
 
 ## Vyučujúci 
 M. Tomcsányiová, 	L. Budinská
