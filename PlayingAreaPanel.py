@@ -49,6 +49,6 @@ class PlayingAreaPanel(Frame):
         print( event.x, event.y)
         print( self.canvas.canvasx(event.x), self.canvas.canvasy(event.y))
 
-    def draw(self):
-        ball = Ball(self.canvas, [20, 500])
-        ball.create()
+    # def draw(self):
+    #     ball = Ball(self.canvas, [20, 500])
+    #     ball.create()

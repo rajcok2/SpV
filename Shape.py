@@ -162,5 +162,5 @@ if __name__ == '__main__':
     # f.template()
     h = House(c, [40, 40], 120, 80)
     h.create()
-    h.template()
+    # h.template()
     p.mainloop()

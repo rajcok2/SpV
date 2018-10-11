@@ -24,7 +24,7 @@ class MainWindow(Tk):
         self.assignment_panel.create()
         self.tools_panel.create()
         self.playing_area_panel.create()
-        self.playing_area_panel.draw()
+        # self.playing_area_panel.draw()
 
 
     def configure_main_window(self):
