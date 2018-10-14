@@ -36,13 +36,15 @@ class Plus:
 
 
 class Ball:
-    def __init__(self, parent, coords, diameter):
+    def __init__(self, parent, coords, height, width):
         self.oval = None
         self.parent = parent
         self.coords = coords
-        self.diameter = diameter
-        self.radius = diameter / 2
-        self.center = [coords[0] + diameter / 2, coords[1] + diameter / 2]
+        self.height = height
+        self.width = width
+        self.diameter = width
+        self.radius = width / 2
+        self.center = [coords[0] + width / 2, coords[1] + width / 2]
 
     def create(self):
         x = self.coords[0]

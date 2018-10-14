@@ -1,6 +1,10 @@
 RUBBER = 'icons/rubber.png'
 LOGO = 'icons/logo.ico'
+BALL_WIDTH = 50
+BALL_HEIGHT = 50
 
+CANVAS_BORDER = 30
+SHAPE_BORDER = 30
 ############ APP PROPERTIES ############
 
 APP_NAME = "Kombinatorika hrou"
