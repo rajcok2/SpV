@@ -198,13 +198,17 @@ def add_object(obj):
 
 
 def iterate_objects_and_compare(event):
-    spravne = 0
-    com = combinations(1, ['white', 'blue'])
+    right_colored = 0
+    used_options = []
+    com = combinations(2, ['white', 'blue'])
     for o in objects:
         print(o.get_colors())
-        if o.get_colors() in com:
-            spravne += 1
-    if len(com) == spravne and len(com) == len(objects):
+        for i in range(len(com)):
+            if (o.get_colors() == com[i]) and (com[i] not in used_options):
+                right_colored += 1
+                used_options.append(com[i])
+
+    if len(com) == right_colored and len(com) == len(objects):
         print('Trafil si vsetky spravne kombinacie')
     else:
         print('Netrafil si vsetky spravne kombinacie')
@@ -226,6 +230,14 @@ def delete_object(event):
         c.delete(token[:-8])
 
 
+def get_spaced_colors(n):
+    max_value = 16581375  # 255**3
+    interval = int(max_value / n)
+    colors = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
+
+    return [(int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
+
+
 def combinations(object_shape, colors_used):
     if object_shape == 1:
         p = [p for p in itertools.product(colors_used, repeat=1)]
@@ -242,7 +254,9 @@ if __name__ == '__main__':
     p = Tk()
     frame = Frame(p)
     frame.pack(side=BOTTOM, fill=BOTH, expand=TRUE)
-    nastavena_farba = 'blue'
+    # nastavena_farba = "#%02x%02x%02x" % (168, 172, 170)
+    contrast_colors = ["#9b59b6", "#3498db", "#95a5a6", "#e74c3c", "#34495e", "#2ecc71"]
+    nastavena_farba = '#2ecc71'
     c = Canvas(frame, bg="white", relief=SUNKEN)
     c.bind("<Button-1>", click)
     c.bind("<Button-2>", iterate_objects_and_compare)
@@ -251,9 +265,12 @@ if __name__ == '__main__':
     c.config(highlightthickness=0)
     c.pack(expand=YES, fill=BOTH, scrollregion=c.bbox(ALL))
     objects = []
-    # add_object(House(c, [40, 40], 120, 80))
-    add_object(Ball(c, [140, 40], 50))
-    add_object(Ball(c, [80, 40], 50))
+    add_object(House(c, [40, 40], 120, 80))
+    add_object(House(c, [40, 160], 120, 80))
+    add_object(House(c, [140, 40], 120, 80))
+    add_object(House(c, [140, 160], 120, 80))
+    # add_object(Ball(c, [140, 40], 50))
+    # add_object(Ball(c, [80, 40], 50))
     # add_object(Flag(c, [40, 140], 60, 100))
     # print(combinations(1, ['red', 'blue']))
     # print(combinations(2, ['red', 'blue']))
