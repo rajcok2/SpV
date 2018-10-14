@@ -1,11 +1,18 @@
 from tkinter import *
+import random
+import itertools
 
 
 class Template:
     def __init__(self, parent, *args):
         self.parent = parent
         self.shapes = [*args]
+        self.name = 'template'
         self.configure_shapes()
+
+    def move_shape(self, x, y):
+        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        self.parent.coords(self.shapes[0], x, y, x + self.shapes[0].diameter, y + self.shapes[0].diameter)
 
     def configure_shapes(self):
         for index in range(len(self.shapes)-2):
@@ -45,21 +52,41 @@ class Ball:
         self.diameter = width
         self.radius = width / 2
         self.center = [coords[0] + width / 2, coords[1] + width / 2]
+        self.diameter = width
+        self.radius = width / 2
+        self.ball_color = None
+        self.tag = 'ball' + str(random.randint(1000, 4000))
+        self.center = [coords[0] + width / 2, coords[1] + width / 2]
+        self.name = 'ball'
+        self.template = None
+
+    def delete_shape(self):
+        self.parent.delete(self.oval)
 
     def create(self):
         x = self.coords[0]
         y = self.coords[1]
         self.oval = self.parent.create_oval(x, y,
-                                            x + self.diameter, y + self.diameter)
+                                            x + self.diameter, y + self.diameter,
+                                            fill='white', outline='black',
+                                            tags=self.tag)
 
-    def template(self):
-        template = None
+    def move_shape(self, x, y):
+        # print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', self.template)
+        self.parent.coords(self.oval, x, y, x + self.diameter, y + self.diameter)
+
+    def get_colors(self):
+        self.ball_color = self.parent.itemcget(self.oval, 'fill')
+        return (self.ball_color,)
+
+    def set_template(self):
         if self.oval:
             plus = Plus(self.parent, self.center, self.radius)
             plus.create()
-            template = Template(self.parent, self.oval,
+            self.template = Template(self.parent, self.oval,
                                 plus.horizontal_line, plus.vertical_line)
-        return template
+            self.name = 'template'
+        return self.template
 
 
 class House:
@@ -70,6 +97,12 @@ class House:
         self.coords = coords
         self.height = height
         self.width = width
+        self.house_1_height = self.height / 3
+        self.house_2_height = 2 * self.height / 3
+        self.house_1_color = None
+        self.house_2_color = None
+        self.house_colors = ()
+        self.tag = 'house' + str(random.randint(1000, 4000))
         self.center = [coords[0] + width / 2, coords[1] + height / 2]
         print(self.coords[0], coords[1])
         print(self.center)
@@ -77,20 +110,27 @@ class House:
     def create(self):
         x = self.coords[0]
         y = self.coords[1]
-        house_1_height = self.height / 3
-        self.house_1 = self.parent.create_polygon(x, y + house_1_height,
-                                                  x + self.width, y + house_1_height,
-                                                  x + self.width / 2, y,
-                                                  fill='white', outline='black')
 
-        house_2_height = 2 * self.height / 3
+        self.house_1 = self.parent.create_polygon(x, y + self.house_1_height,
+                                                  x + self.width, y + self.house_1_height,
+                                                  x + self.width / 2, y,
+                                                  fill='white', outline='black',
+                                                  tags=self.tag)
+
         left_x = self.coords[0] + 10
         right_x = self.coords[0] - 10
-        self.house_2 = self.parent.create_polygon(left_x, y + house_1_height,
-                                                  left_x, y + house_2_height,
-                                                  right_x + self.width, y + house_2_height,
-                                                  right_x + self.width, y + house_1_height,
-                                                  fill='white', outline='black')
+        self.house_2 = self.parent.create_polygon(left_x, y + self.house_1_height,
+                                                  left_x, y + self.house_2_height,
+                                                  right_x + self.width, y + self.house_2_height,
+                                                  right_x + self.width, y + self.house_1_height,
+                                                  fill='white', outline='black',
+                                                  tags=self.tag)
+
+    def get_colors(self):
+        self.house_1_color = self.parent.itemcget(self.house_1, 'fill')
+        self.house_2_color = self.parent.itemcget(self.house_2, 'fill')
+        self.house_colors = (self.house_1_color, self.house_2_color)
+        return self.house_colors
 
     def template(self):
         template = None
@@ -102,6 +142,8 @@ class House:
         return template
 
 
+
+
 class Flag:
     def __init__(self, parent, coords, height, width):
         self.parent = parent
@@ -111,6 +153,11 @@ class Flag:
         self.coords = coords
         self.height = height
         self.width = width
+        self.flag_1_color = None
+        self.flag_2_color = None
+        self.flag_3_color = None
+        self.flag_colors = ()
+        self.tag = 'flag' + str(random.randint(1000, 4000))
         self.center = [coords[0] + width / 2, coords[1] + height / 2]
 
     def create(self):
@@ -122,21 +169,37 @@ class Flag:
                                                  x, y + flag_height,
                                                  x + self.width, y + flag_height,
                                                  x + self.width, y,
-                                                 fill='white', outline='black')
+                                                 fill='white', outline='black',
+                                                 tags=self.tag)
 
         y += flag_height
         self.flag_2 = self.parent.create_polygon(x, y,
                                                  x, y + flag_height,
                                                  x + self.width, y + flag_height,
                                                  x + self.width, y,
-                                                 fill='white', outline='black')
+                                                 fill='white', outline='black',
+                                                 tags=self.tag)
 
         y += flag_height
         self.flag_3 = self.parent.create_polygon(x, y,
                                                  x, y + flag_height,
                                                  x + self.width, y + flag_height,
                                                  x + self.width, y,
-                                                 fill='white', outline='black')
+                                                 fill='white', outline='black',
+                                                 tags=self.tag)
+
+    # def is_clicked(self, p1):
+    #     x = self.coords[0]
+    #     y = self.coords[1]
+    #     return x <= p1[0] < x + self.width and y <= p1[1] < y + 3 * self.height / 3
+
+    def get_colors(self):
+        self.flag_1_color = self.parent.itemcget(self.flag_1, 'fill')
+        self.flag_2_color = self.parent.itemcget(self.flag_2, 'fill')
+        self.flag_3_color = self.parent.itemcget(self.flag_3, 'fill')
+        self.flag_colors = (self.flag_1_color, self.flag_2_color,
+                                self.flag_3_color)
+        return self.flag_colors
 
     def template(self):
         template = None
@@ -148,14 +211,90 @@ class Flag:
         return template
 
 
+def add_object(obj):
+    objects.append(obj)
+    obj.create()
+
+
+def iterate_objects_and_compare(event):
+    right_colored = 0
+    used_options = []
+    com = combinations(2, ['white', 'blue'])
+    for o in objects:
+        print(o.get_colors())
+        for i in range(len(com)):
+            if (o.get_colors() == com[i]) and (com[i] not in used_options):
+                right_colored += 1
+                used_options.append(com[i])
+
+    if len(com) == right_colored and len(com) == len(objects):
+        print('Trafil si vsetky spravne kombinacie')
+    else:
+        print('Netrafil si vsetky spravne kombinacie')
+
+
+def click(event):
+    if c.find_withtag(CURRENT):
+        c.itemconfig(CURRENT, fill=nastavena_farba)
+        # print(c.itemcget(CURRENT, 'fill'))  # => Returns color of object
+        # print(c.itemcget(CURRENT, 'tags'))
+        # print(c.itemconfigure(CURRENT))
+
+
+def delete_object(event):
+    token = c.itemcget(CURRENT, 'tags')
+    # print(token[:-8])
+    # print(c.gettags(c.find_withtag(CURRENT)))
+    if token[:-8] in c.gettags(c.find_withtag(CURRENT)):
+        c.delete(token[:-8])
+
+
+def get_spaced_colors(n):
+    max_value = 16581375  # 255**3
+    interval = int(max_value / n)
+    colors = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
+
+    return [(int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
+
+
+def combinations(object_shape, colors_used):
+    if object_shape == 1:
+        p = [p for p in itertools.product(colors_used, repeat=1)]
+    elif object_shape == 2:
+        p = [p for p in itertools.product(colors_used, repeat=2)]
+    elif object_shape == 3:
+        p = [p for p in itertools.product(colors_used, repeat=3)]
+    else:
+        return
+    return p
+
+
 if __name__ == '__main__':
     p = Tk()
     frame = Frame(p)
     frame.pack(side=BOTTOM, fill=BOTH, expand=TRUE)
+    # nastavena_farba = "#%02x%02x%02x" % (168, 172, 170)
+    contrast_colors = ["#9b59b6", "#3498db", "#95a5a6", "#e74c3c", "#34495e", "#2ecc71"]
+    nastavena_farba = '#2ecc71'
     c = Canvas(frame, bg="white", relief=SUNKEN)
+    c.bind("<Button-1>", click)
+    c.bind("<Button-2>", iterate_objects_and_compare)
+    c.bind("<Button-3>", delete_object)
     c.config(scrollregion=(0, 0, 300, 1000))
     c.config(highlightthickness=0)
     c.pack(expand=YES, fill=BOTH, scrollregion=c.bbox(ALL))
+    objects = []
+    add_object(House(c, [40, 40], 120, 80))
+    add_object(House(c, [40, 160], 120, 80))
+    add_object(House(c, [140, 40], 120, 80))
+    add_object(House(c, [140, 160], 120, 80))
+    # add_object(Ball(c, [140, 40], 50))
+    # add_object(Ball(c, [80, 40], 50))
+    # add_object(Flag(c, [40, 140], 60, 100))
+    # print(combinations(1, ['red', 'blue']))
+    # print(combinations(2, ['red', 'blue']))
+    # print(combinations(3, ['red', 'blue', 'yellow']))
+
     # b = Ball(c, [40, 40], 50)
     # b.create()
     # b.template()
@@ -164,5 +303,5 @@ if __name__ == '__main__':
     # f.template()
     h = House(c, [40, 40], 120, 80)
     h.create()
-    # h.template()
+    h.template()
     p.mainloop()
