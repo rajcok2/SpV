@@ -58,8 +58,8 @@ class ToolsPanel(Frame):
 
     def set_rubber(self):
         down_frame = self.get_down_frame()
-        img = ImageTk.PhotoImage(Image.open(Constants.RUBBER))
-        self.set_button(down_frame, 'white', img)
+        # img = ImageTk.PhotoImage(Image.open(Constants.RUBBER))
+        # self.set_button(down_frame, 'white', img)
 
     def set_colors(self):
         colors = self.generate_colors()

@@ -2,7 +2,6 @@ from Shape import *
 from Constants import *
 from time import sleep
 
-
 DELAY = 0.2
 
 class ShapeCreator:
@@ -22,6 +21,8 @@ class ShapeCreator:
         self.playing_area_col = 0
         self.playing_area_row_template = 0
         self.playing_area_col_template = 1
+
+        self.shape_setup = None
 
         self.parent.update()
 
@@ -64,13 +65,18 @@ class ShapeCreator:
     def add_new(self):
         # nezabudni vzdy posunut template
         # !!!!!!!!!!!!!!!
+        # if self.shape_setup.click()
+        # if self.shape_setup.template_clicked:
+        #     ...
         self.move_template()
         self.set_shape_coords()
         shape = self.shape_type(self.parent, self.new_shape_coords, self.height, self.width)
         shape.create()
 
-        print(self.playing_area_col)
-        self.print_map()
+        # self.shape_setup.objects.append(shape)
+
+        # print(self.playing_area_col)
+        # self.print_map()
         self.playing_area_map[self.playing_area_row].insert(self.playing_area_col, shape)
         self.playing_area_col += 1
 
@@ -111,6 +117,7 @@ class ShapeCreator:
                     self.playing_area_map[row][col] = None
                     self.rearrangement(row, col)
                     shape.delete_shape()
+                    self.shape_setup.delete_object()
                     self.parent.update()
                     sleep(DELAY)
                     break

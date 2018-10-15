@@ -1,5 +1,5 @@
-RUBBER = 'icons/rubber.png'
-LOGO = 'icons/logo.ico'
+# RUBBER = 'icons/rubber.png'
+# LOGO = 'icons/logo.ico'
 BALL_WIDTH = 50
 BALL_HEIGHT = 50
 

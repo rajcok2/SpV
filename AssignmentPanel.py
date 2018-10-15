@@ -63,16 +63,16 @@ class AssignmentPanel:
         ttk.Separator(self.button_panel_bottom, orient=VERTICAL)\
             .pack(side=LEFT, fill=Y, expand=FALSE, pady=2, padx=4)
 
-        print(Constants.RUBBER)
+        # print(Constants.RUBBER)
         import os.path
-        print(os.path.exists(Constants.RUBBER))
+        # print(os.path.exists(Constants.RUBBER))
         self.search_string = Entry(self.button_panel_bottom, width=6)
         self.search_string.pack(side=LEFT, padx=(20,5))
 
-        img = ImageTk.PhotoImage(Image.open(Constants.RUBBER))
-        self.btn_show_metadata = ttk.Button(self.button_panel_bottom, text="skontroluj", width=0, compound=CENTER)
-        self.btn_show_metadata.image = img
-        self.btn_show_metadata.pack(side=LEFT, padx=5)
+        # img = ImageTk.PhotoImage(Image.open(Constants.RUBBER))
+        # self.btn_show_metadata = ttk.Button(self.button_panel_bottom, text="skontroluj", width=0, compound=CENTER)
+        # self.btn_show_metadata.image = img
+        # self.btn_show_metadata.pack(side=LEFT, padx=5)
         #ToolTip(self.btn_show_metadata, Constants.SHOW_METADATA)
 
         ttk.Separator(self.button_panel_bottom, orient=VERTICAL)\

@@ -1,7 +1,11 @@
 from tkinter import *
+from ShapeCreator import *
 import random
 import itertools
 
+objects = []
+canvas_in_shapes = None
+nastavena_farba = '#2ecc71'
 
 class Template:
     def __init__(self, parent, *args):
@@ -52,11 +56,8 @@ class Ball:
         self.diameter = width
         self.radius = width / 2
         self.center = [coords[0] + width / 2, coords[1] + width / 2]
-        self.diameter = width
-        self.radius = width / 2
         self.ball_color = None
         self.tag = 'ball' + str(random.randint(1000, 4000))
-        self.center = [coords[0] + width / 2, coords[1] + width / 2]
         self.name = 'ball'
         self.template = None
 
@@ -72,7 +73,6 @@ class Ball:
                                             tags=self.tag)
 
     def move_shape(self, x, y):
-        # print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', self.template)
         self.parent.coords(self.oval, x, y, x + self.diameter, y + self.diameter)
 
     def get_colors(self):
@@ -86,6 +86,7 @@ class Ball:
             self.template = Template(self.parent, self.oval,
                                 plus.horizontal_line, plus.vertical_line)
             self.name = 'template'
+            self.parent.itemconfig(self.oval, tags='template')
         return self.template
 
 
@@ -211,63 +212,79 @@ class Flag:
         return template
 
 
-def add_object(obj):
-    objects.append(obj)
-    obj.create()
 
 
-def iterate_objects_and_compare(event):
-    right_colored = 0
-    used_options = []
-    com = combinations(2, ['white', 'blue'])
-    for o in objects:
-        print(o.get_colors())
-        for i in range(len(com)):
-            if (o.get_colors() == com[i]) and (com[i] not in used_options):
-                right_colored += 1
-                used_options.append(com[i])
 
-    if len(com) == right_colored and len(com) == len(objects):
-        print('Trafil si vsetky spravne kombinacie')
-    else:
-        print('Netrafil si vsetky spravne kombinacie')
+class ShapeSetup:
+    def __init__(self):
+        self.canvas = None
+        self.template_clicked = False
+        self.objects = list()
 
 
-def click(event):
-    if c.find_withtag(CURRENT):
-        c.itemconfig(CURRENT, fill=nastavena_farba)
-        # print(c.itemcget(CURRENT, 'fill'))  # => Returns color of object
-        # print(c.itemcget(CURRENT, 'tags'))
-        # print(c.itemconfigure(CURRENT))
+    def add_object(obj):
+        objects.append(obj)
+        # obj.create()
 
 
-def delete_object(event):
-    token = c.itemcget(CURRENT, 'tags')
-    # print(token[:-8])
-    # print(c.gettags(c.find_withtag(CURRENT)))
-    if token[:-8] in c.gettags(c.find_withtag(CURRENT)):
-        c.delete(token[:-8])
+    def iterate_objects_and_compare(event):
+        right_colored = 0
+        used_options = []
+        com = combinations(2, ['white', 'blue'])
+        for o in objects:
+            print(o.get_colors())
+            for i in range(len(com)):
+                if (o.get_colors() == com[i]) and (com[i] not in used_options):
+                    right_colored += 1
+                    used_options.append(com[i])
+
+        if len(com) == right_colored and len(com) == len(objects):
+            print('Trafil si vsetky spravne kombinacie')
+        else:
+            print('Netrafil si vsetky spravne kombinacie')
+
+    def click(self, event):
+        token, a = self.canvas.itemcget(CURRENT, 'tags').split()
+        if token.strip() == 'template':
+            self.template_clicked = True
+        if self.canvas.find_withtag(CURRENT):
+            self.canvas.itemconfig(CURRENT, fill=nastavena_farba)
+            # print(c.itemcget(CURRENT, 'fill'))  # => Returns color of object
+            # print(c.itemcget(CURRENT, 'tags'))
+            # print(c.itemconfigure(CURRENT))
 
 
-def get_spaced_colors(n):
-    max_value = 16581375  # 255**3
-    interval = int(max_value / n)
-    colors = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
+    def delete_object(self, event):
+        token = self.canvas.itemcget(CURRENT, 'tags')
+        # print(token[:-8])
+        # print(c.gettags(c.find_withtag(CURRENT)))
+        if token[:-8] in self.canvas.gettags(self.canvas.find_withtag(CURRENT)):
+            self.canvas.delete(token[:-8])
 
-    return [(int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
+
+    def get_spaced_colors(self, n):
+        max_value = 16581375  # 255**3
+        interval = int(max_value / n)
+        colors = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
+
+        return [(int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
 
 
-def combinations(object_shape, colors_used):
-    if object_shape == 1:
-        p = [p for p in itertools.product(colors_used, repeat=1)]
-    elif object_shape == 2:
-        p = [p for p in itertools.product(colors_used, repeat=2)]
-    elif object_shape == 3:
-        p = [p for p in itertools.product(colors_used, repeat=3)]
-    else:
-        return
-    return p
+    def combinations(self, object_shape, colors_used):
+        if object_shape == 1:
+            p = [p for p in itertools.product(colors_used, repeat=1)]
+        elif object_shape == 2:
+            p = [p for p in itertools.product(colors_used, repeat=2)]
+        elif object_shape == 3:
+            p = [p for p in itertools.product(colors_used, repeat=3)]
+        else:
+            return
+        return p
 
+    def set_binds(self):
+        self.canvas.bind("<Button-1>", self.click)
+        self.canvas.bind("<Button-2>", self.iterate_objects_and_compare)
+        self.canvas.bind("<Button-3>", self.delete_object)
 
 if __name__ == '__main__':
     p = Tk()

@@ -1,7 +1,7 @@
 from tkinter import Frame, Canvas, Scrollbar
 from tkinter.constants import *
 
-from Shape import Ball
+from Shape import *
 
 
 class PlayingAreaPanel(Frame):
@@ -10,6 +10,7 @@ class PlayingAreaPanel(Frame):
         Frame.__init__(self, parent, bg = color)
         self.canvas = None
         self.parent = parent
+        self.shape_setup = None
 
     def create(self):
         self.pack(side=BOTTOM, fill=BOTH, expand=TRUE)
@@ -28,6 +29,10 @@ class PlayingAreaPanel(Frame):
             canv.create_text(150, 50+(i*100), text='spam'+str(i), fill='beige')
         canv.bind('<Double-1>', self.onDoubleClick)       # set event handler
         self.canvas = canv
+
+        self.shape_setup.canvas = self.canvas
+        self.shape_setup.set_binds()
+
         # self.canvas.bind('<4>', lambda event: self.canvas.xview('scroll', -1, 'units'))
         # self.canvas.bind('<5>', lambda event: self.canvas.xview('scroll', 1, 'units'))
 
@@ -48,6 +53,9 @@ class PlayingAreaPanel(Frame):
         y = canvas.canvasy(event.y)
         print( event.x, event.y)
         print( self.canvas.canvasx(event.x), self.canvas.canvasy(event.y))
+
+
+
 
     # def draw(self):
     #     ball = Ball(self.canvas, [20, 500])
