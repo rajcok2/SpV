@@ -222,12 +222,12 @@ class ShapeSetup:
         self.objects = list()
 
 
-    def add_object(obj):
-        objects.append(obj)
+    def add_object(self, obj):
+        self.objects.append(obj)
         # obj.create()
 
 
-    def iterate_objects_and_compare(event):
+    def iterate_objects_and_compare(self, event):
         right_colored = 0
         used_options = []
         com = combinations(2, ['white', 'blue'])
