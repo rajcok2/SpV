@@ -2,6 +2,7 @@ from tkinter import *
 from ShapeCreator import *
 import random
 import itertools
+from MainElements import MainElements
 
 objects = []
 canvas_in_shapes = None
@@ -220,6 +221,7 @@ class ShapeSetup:
         self.canvas = None
         self.template_clicked = False
         self.objects = list()
+        self.main_elements = MainElements()
 
 
     def add_object(self, obj):
@@ -244,11 +246,12 @@ class ShapeSetup:
             print('Netrafil si vsetky spravne kombinacie')
 
     def click(self, event):
+        print('farba', self.main_elements.color)
         token, a = self.canvas.itemcget(CURRENT, 'tags').split()
         if token.strip() == 'template':
             self.template_clicked = True
         if self.canvas.find_withtag(CURRENT):
-            self.canvas.itemconfig(CURRENT, fill=nastavena_farba)
+            self.canvas.itemconfig(CURRENT, fill=self.main_elements.color)
             # print(c.itemcget(CURRENT, 'fill'))  # => Returns color of object
             # print(c.itemcget(CURRENT, 'tags'))
             # print(c.itemconfigure(CURRENT))

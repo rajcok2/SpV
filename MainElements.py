@@ -10,4 +10,5 @@ class Singleton(type):
 class MainElements(metaclass=Singleton):
     def __init__(self, main_window=None):
         self.main_window = main_window
-        self.menu_panel = main_window.menu_panel
+        self.menu_panel = None
+        self.color = None

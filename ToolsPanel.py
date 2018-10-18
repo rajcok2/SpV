@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 from tkinter.constants import *
 import Constants
 from random import randrange
-
+from MainElements import MainElements
 
 class ToolsPanel(Frame):
 
@@ -14,6 +14,7 @@ class ToolsPanel(Frame):
         self.active_button = None
         self.buttons = list()
         self.number_of_colors = number_of_colors
+        self.main_elements = MainElements()
 
     def create(self):
         self.configure(background=Constants.BACKGROUND_COLOR)
@@ -75,6 +76,7 @@ class ToolsPanel(Frame):
     def get_color(self, event):
         btn = event.widget
         print(btn.my_color)
+        self.main_elements.color = btn.my_color
         print(btn)
         parent = btn.master
         if not self.active_button == btn:
