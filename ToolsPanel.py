@@ -3,8 +3,9 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from tkinter.constants import *
 import Constants
-from random import randrange
+import random
 from MainElements import MainElements
+
 
 class ToolsPanel(Frame):
 
@@ -33,11 +34,14 @@ class ToolsPanel(Frame):
         return frame
 
     def generate_colors(self):
-        colors = list()
-        for number in range(self.number_of_colors):
-            color = '#{:03} {:03} {:03}'.format(randrange(0,255), randrange(0,255), randrange(0,255))
-            colors.append(color)
-        return colors
+        final_colors = list()
+        i = 0
+        while i != self.number_of_colors:
+            color = '#' + "%06x" % random.randint(0, 0xFFFFFF)
+            if color not in final_colors:
+                final_colors.append(color)
+                i += 1
+        return final_colors
 
     def create_buttons(self):
         self.buttons_panel = Frame(self, width=80, background=Constants.BACKGROUND_COLOR)
@@ -52,32 +56,34 @@ class ToolsPanel(Frame):
         btn.pack(fill=BOTH, expand=True)
         setattr(btn, 'my_color', color)
         setattr(btn, 'is_active', False)
-
         btn.bind('<Button-1>', lambda e: self.get_color(e))
 
         return btn
 
     def set_rubber(self):
         down_frame = self.get_down_frame()
-        # img = ImageTk.PhotoImage(Image.open(Constants.RUBBER))
-        # self.set_button(down_frame, 'white', img)
+        img = ImageTk.PhotoImage(Image.open(Constants.RUBBER))
+        self.set_button(down_frame, 'white', img)
 
     def set_colors(self):
         colors = self.generate_colors()
+        self.main_elements.colors = colors
+        self.main_elements.color = colors[0]  #nastavi prvu vygenerovanu farbu
         for color in colors:
             down_frame = self.get_down_frame()
             btn = self.set_button(down_frame, color)
             self.buttons.append(btn)
         self.set_rubber()
         self.active_button = self.buttons[0]
+        print(self.active_button)
         self.active_button.is_active = True
         self.active_button.master['highlightbackground'] = Constants.ACTIVE_TOOL_COLOR
 
     def get_color(self, event):
         btn = event.widget
         print(btn.my_color)
-        self.main_elements.color = btn.my_color
         print(btn)
+        self.main_elements.color = btn.my_color
         parent = btn.master
         if not self.active_button == btn:
             print('eeeeeeeeeeeeeeeeeeee')
@@ -87,5 +93,3 @@ class ToolsPanel(Frame):
             self.active_button.is_active = False
             self.active_button.master['highlightbackground'] = Constants.BACKGROUND_COLOR
             self.active_button = btn
-
-
