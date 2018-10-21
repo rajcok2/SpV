@@ -1,5 +1,6 @@
 from tkinter import *
 from ShapeCreator import *
+from ToolsPanel import *
 import random
 import itertools
 from MainElements import MainElements
@@ -213,9 +214,6 @@ class Flag:
         return template
 
 
-
-
-
 class ShapeSetup:
     def __init__(self):
         self.canvas = None
@@ -223,62 +221,52 @@ class ShapeSetup:
         self.objects = list()
         self.main_elements = MainElements()
 
-
-    def add_object(self, obj):
-        self.objects.append(obj)
+    def add_object(obj):
+        objects.append(obj)
         # obj.create()
 
-
-    def iterate_objects_and_compare(self, event):
-        right_colored = 0
-        used_options = []
-        com = combinations(2, ['white', 'blue'])
-        for o in objects:
-            print(o.get_colors())
-            for i in range(len(com)):
-                if (o.get_colors() == com[i]) and (com[i] not in used_options):
-                    right_colored += 1
-                    used_options.append(com[i])
-
-        if len(com) == right_colored and len(com) == len(objects):
-            print('Trafil si vsetky spravne kombinacie')
-        else:
-            print('Netrafil si vsetky spravne kombinacie')
+    # def iterate_objects_and_compare(ojb_shape):
+    #     right_colored = 0
+    #     used_options = []
+    #     com = combinations(obj_shape, self.main_elements.colors)
+    #     for o in objects:
+    #         print(o.get_colors())
+    #         for i in range(len(com)):
+    #             if (o.get_colors() == com[i]) and (com[i] not in used_options):
+    #                 right_colored += 1
+    #                 used_options.append(com[i])
+    #
+    #     if len(com) == right_colored and len(com) == len(objects):
+    #         print('Trafil si vsetky spravne kombinacie')
+    #     else:
+    #         print('Netrafil si vsetky spravne kombinacie')
 
     def click(self, event):
-        print('farba', self.main_elements.color)
+        " po kliknuti na template chceme aby sa pridal novy prazdny objekt a vsetko sa posunulo doprava"
         token, a = self.canvas.itemcget(CURRENT, 'tags').split()
         if token.strip() == 'template':
             self.template_clicked = True
-        if self.canvas.find_withtag(CURRENT):
+            print('klikol si na template')
+        elif self.canvas.find_withtag(CURRENT):
             self.canvas.itemconfig(CURRENT, fill=self.main_elements.color)
             # print(c.itemcget(CURRENT, 'fill'))  # => Returns color of object
             # print(c.itemcget(CURRENT, 'tags'))
             # print(c.itemconfigure(CURRENT))
 
-
     def delete_object(self, event):
-        token = self.canvas.itemcget(CURRENT, 'tags')
-        # print(token[:-8])
-        # print(c.gettags(c.find_withtag(CURRENT)))
-        if token[:-8] in self.canvas.gettags(self.canvas.find_withtag(CURRENT)):
-            self.canvas.delete(token[:-8])
-
-
-    def get_spaced_colors(self, n):
-        max_value = 16581375  # 255**3
-        interval = int(max_value / n)
-        colors = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
-
-        return [(int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
-
+        token, a = self.canvas.itemcget(CURRENT, 'tags').split()
+        print(token, a)
+        if token.strip() == 'template':
+            print('chces zmazat template')
+        elif token.strip() in self.canvas.gettags(self.canvas.find_withtag(CURRENT)):
+            self.canvas.delete(token.strip())
 
     def combinations(self, object_shape, colors_used):
-        if object_shape == 1:
+        if object_shape == 'kruh':
             p = [p for p in itertools.product(colors_used, repeat=1)]
-        elif object_shape == 2:
+        elif object_shape == 'dom':
             p = [p for p in itertools.product(colors_used, repeat=2)]
-        elif object_shape == 3:
+        elif object_shape == 'vlajka':
             p = [p for p in itertools.product(colors_used, repeat=3)]
         else:
             return
@@ -286,16 +274,13 @@ class ShapeSetup:
 
     def set_binds(self):
         self.canvas.bind("<Button-1>", self.click)
-        self.canvas.bind("<Button-2>", self.iterate_objects_and_compare)
+        # self.canvas.bind("<Button-2>", self.iterate_objects_and_compare)
         self.canvas.bind("<Button-3>", self.delete_object)
 
 if __name__ == '__main__':
     p = Tk()
     frame = Frame(p)
     frame.pack(side=BOTTOM, fill=BOTH, expand=TRUE)
-    # nastavena_farba = "#%02x%02x%02x" % (168, 172, 170)
-    contrast_colors = ["#9b59b6", "#3498db", "#95a5a6", "#e74c3c", "#34495e", "#2ecc71"]
-    nastavena_farba = '#2ecc71'
     c = Canvas(frame, bg="white", relief=SUNKEN)
     c.bind("<Button-1>", click)
     c.bind("<Button-2>", iterate_objects_and_compare)
