@@ -1,3 +1,6 @@
+import random
+
+
 class Singleton(type):
     _instances = {}
 
@@ -12,3 +15,7 @@ class MainElements(metaclass=Singleton):
         self.main_window = main_window
         self.menu_panel = None
         self.color = None
+        self.colors = None
+        # self.task_templates = [{'lopta': random.choice(1)},
+        #                        {'dom': random.choice(1, 4)},
+        #                        {'vlajka': random.choice(1, 3)}]
