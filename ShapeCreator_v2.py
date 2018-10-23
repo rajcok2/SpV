@@ -2,7 +2,7 @@ from Shape import *
 from Constants import *
 from time import sleep
 
-DELAY = 0.05
+DELAY = 0.2
 
 
 class ShapeCreator:
@@ -28,15 +28,13 @@ class ShapeCreator:
 
         self.parent.update()
 
-    def print_map(self, map = None):
-        if not map:
-            map = self.playing_area_map
+    def print_map(self):
         pole = []
-        for row in range(len(map)):
+        for row in range(len(self.playing_area_map)):
             pole.append([])
-            for col in range(len(map[row])):
-                if map[row][col]:
-                    pole[row].append(map[row][col].name)
+            for col in range(len(self.playing_area_map[row])):
+                if self.playing_area_map[row][col]:
+                    pole[row].append(self.playing_area_map[row][col].name)
                 else:
                     pole[row].append(None)
         print(pole)
@@ -60,6 +58,7 @@ class ShapeCreator:
         self.parent.update()
 
     def move_template(self):
+
         self.set_shape_position(self.playing_area_row_template, self.playing_area_col_template + 1)
         x, y = self.template_coords
         self.template.move_shape(x, y)
@@ -90,7 +89,6 @@ class ShapeCreator:
     def compute_coords(self, col, row):
         x = CANVAS_BORDER + (self.width + SHAPE_BORDER) * col
         y = CANVAS_BORDER + (self.height + SHAPE_BORDER) * row
-
         return x, y
 
     def set_shape_position(self, _row, _col):
@@ -117,14 +115,13 @@ class ShapeCreator:
 
         return row, col
 
-    def add_new(self, shape=None):
+    def add_new(self):
 
         self.move_template()
         x, y = self.coords_for_new_shape
 
-        if not shape:
-            shape = self.shape_type(self.parent, [x, y], self.height, self.width)
-            shape.create()
+        shape = self.shape_type(self.parent, [x, y], self.height, self.width)
+        shape.create()
 
         self.update_playing_area(shape)
 
@@ -150,7 +147,6 @@ class ShapeCreator:
                     sleep(DELAY)
                     break
         self.set_template_coords_after_removing()
-        self.print_map()
 
     def rearrangement(self, _row=0, _col=0):
         for row in range(_row, len(self.playing_area_map)):
@@ -167,6 +163,9 @@ class ShapeCreator:
                     next_row = row + 1
                     _col = 0
 
+                    if next_row == len(self.playing_area_map):
+                        return
+
                 self.playing_area_map[row][col], self.playing_area_map[next_row][next_col] = \
                     self.playing_area_map[next_row][next_col], self.playing_area_map[row][col]
 
@@ -174,8 +173,8 @@ class ShapeCreator:
                     self.move(row, col)
                     self.playing_area_col_template = col
                     self.playing_area_row_template = row
-                # else:
-                #     return
+                else:
+                    return
 
     def move(self, row, col):
         shape = self.playing_area_map[row][col]
@@ -186,37 +185,6 @@ class ShapeCreator:
 
         sleep(DELAY)
         self.parent.update()
-
-    def scroll_map(self):
-        ...
-
-    def resize_map(self):
-        old_map = self.playing_area_map[:]
-        # self.playing_area_map = [[self.template]]
-
-        self.playing_area_map = [[None]]
-        self.playing_area_row = 0
-        self.playing_area_col = 0
-        self.playing_area_row_template = 0
-        self.playing_area_col_template = 0
-        self.template_coords = [SHAPE_BORDER, SHAPE_BORDER]
-        self.coords_for_new_shape = [0, 0]
-
-        for row in range(len(old_map)):
-            for col in range(len(old_map[row])):
-                if old_map[row][col]:
-                    old_map[row][col].delete_shape()
-                    self.parent.update()
-        print('stara mapa')
-        self.print_map(old_map)
-        for row in range(len(old_map)):
-            for col in range(len(old_map[row])):
-                if old_map[row][col]:
-                    print(old_map[row][col])
-                    self.add_new(old_map[row][col])
-                    self.parent.update()
-        self.print_map()
-
 
 
 if __name__ == '__main__':
@@ -229,17 +197,17 @@ if __name__ == '__main__':
     c.pack(expand=YES, fill=BOTH, scrollregion=c.bbox(ALL))
     sc = ShapeCreator(c, Ball, BALL_HEIGHT, BALL_WIDTH)
     sc.create_template()
-    rr = sc.add_new()  # 1
-    jj = sc.add_new()  # 2
-    oo = sc.add_new()  # 3
-    pp = sc.add_new()  # 4
-    a = sc.add_new()  # 5
+    rr = sc.add_new() #1
+    jj = sc.add_new() #2
+    oo = sc.add_new() #3
+    pp = sc.add_new() #4
+    a = sc.add_new() #5
     sc.add_new()
     # sc.add_new()
     # sc.add_new()
     # sc.print_map()
     # print('pred zmazanim')
-    sc.remove(a)  # 5
+    sc.remove(a) #5
 
     sc.remove(rr)
     sc.remove(jj)
@@ -252,11 +220,6 @@ if __name__ == '__main__':
     ou = sc.add_new()
     sc.remove(ou)
 
-    sc.add_new()
-    sc.add_new()
-    sc.add_new()
-    sc.add_new()
-
     # sc.print_map()
 
     # b = sc.add_new()
@@ -267,7 +230,5 @@ if __name__ == '__main__':
     # sc.remove(b)
 
     # sc.print_map()
-    c.config(width = 500)
     c.update()
-    sc.resize_map()
     p.mainloop()

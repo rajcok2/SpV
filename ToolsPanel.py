@@ -9,12 +9,13 @@ from MainElements import MainElements
 
 class ToolsPanel(Frame):
 
-    def __init__(self, parent, number_of_colors):
+    def __init__(self, parent):
         super().__init__(master=parent)
         self.buttons_panel = None
         self.active_button = None
         self.buttons = list()
-        self.number_of_colors = number_of_colors
+        self.fc = list()
+        self.number_of_colors = None
         self.main_elements = MainElements()
 
     def create(self):
@@ -34,14 +35,16 @@ class ToolsPanel(Frame):
         return frame
 
     def generate_colors(self):
-        final_colors = list()
         i = 0
+        self.number_of_colors = random.choice(self.main_elements.current_task[1])
         while i != self.number_of_colors:
             color = '#' + "%06x" % random.randint(0, 0xFFFFFF)
-            if color not in final_colors:
-                final_colors.append(color)
+            if color not in self.fc:
+                self.fc.append(color)
                 i += 1
-        return final_colors
+        self.main_elements.final_colors = self.fc
+        print(self.fc)
+        return self.fc
 
     def create_buttons(self):
         self.buttons_panel = Frame(self, width=80, background=Constants.BACKGROUND_COLOR)

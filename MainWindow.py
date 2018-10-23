@@ -6,7 +6,8 @@ from ToolsPanel import ToolsPanel
 from PlayingAreaPanel import PlayingAreaPanel
 from AssignmentPanel import AssignmentPanel
 from Constants import *
-from ShapeCreator import ShapeCreator
+from ShapeCreator_v2 import ShapeCreator
+from MainElements import *
 from Shape import *
 
 
@@ -15,30 +16,27 @@ class MainWindow(Tk):
     def __init__(self):
         super().__init__()
         self.menu_panel = MenuPanel(self)
+        self.tools_panel = ToolsPanel(self)
+        self.main_elements = MainElements()
         self.assignment_panel = AssignmentPanel(self)
         self.playing_area_panel = PlayingAreaPanel(self)
-        self.tools_panel = ToolsPanel(self, 3)
         self.shape_creator = None
         self.shape_setup = ShapeSetup()
         self.playing_area_panel.shape_setup = self.shape_setup
 
     def create(self):
         self.configure_main_window()
-
         self.menu_panel.create()
-        self.assignment_panel.create()
         self.tools_panel.create()
         self.playing_area_panel.create()
         self.playing_area_panel.shape_setup = self.shape_setup
         # self.playing_area_panel.draw()
-
         c = self.playing_area_panel.canvas
-
         self.shape_creator = ShapeCreator(c, Ball, BALL_HEIGHT, BALL_WIDTH)
-        self.shape_creator.add_template()
+        self.shape_creator.create_template()
         self.shape_creator.add_new()
         self.shape_creator.shape_setup = self.shape_setup
-
+        self.assignment_panel.create()
 
     def configure_main_window(self):
         self.title(APP_NAME)

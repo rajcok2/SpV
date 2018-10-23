@@ -1,6 +1,6 @@
 from tkinter import Frame, Canvas, Scrollbar
 from tkinter.constants import *
-
+from MainElements import *
 from Shape import *
 
 
@@ -11,6 +11,7 @@ class PlayingAreaPanel(Frame):
         self.canvas = None
         self.parent = parent
         self.shape_setup = None
+        self.main_elements = MainElements()
 
     def create(self):
         self.pack(side=BOTTOM, fill=BOTH, expand=TRUE)
@@ -26,9 +27,10 @@ class PlayingAreaPanel(Frame):
         canv.pack(expand=YES, fill=BOTH, scrollregion=canv.bbox(ALL))
 
         for i in range(10):
-            canv.create_text(150, 50+(i*100), text='spam'+str(i), fill='beige')
+            canv.create_text(150, 50+(i*100), fill='beige')
         canv.bind('<Double-1>', self.onDoubleClick)       # set event handler
         self.canvas = canv
+        self.main_elements.canvas = self.canvas
 
         self.shape_setup.canvas = self.canvas
         self.shape_setup.set_binds()
