@@ -1,5 +1,4 @@
-import random
-
+from Constants import *
 
 class Singleton(type):
     _instances = {}
@@ -15,7 +14,11 @@ class MainElements(metaclass=Singleton):
         self.main_window = main_window
         self.menu_panel = None
         self.color = None
-        self.colors = None
-        # self.task_templates = [{'lopta': random.choice(1)},
-        #                        {'dom': random.choice(1, 4)},
-        #                        {'vlajka': random.choice(1, 3)}]
+        self.colors = []
+        self.main_array = []
+        self.canvas = None
+        self.shape_type = None
+        self.final_colors = []
+        self.entry_label = None
+        self.current_task_number = 0
+        self.current_task = TASKS[self.current_task_number]

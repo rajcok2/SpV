@@ -1,8 +1,9 @@
-from idlelib.ToolTip import *
 from tkinter import ttk
+from tkinter import *
 from PIL import Image, ImageTk
 import Constants
-
+from Shape import ShapeSetup
+from MainElements import *
 
 class AssignmentPanel:
     def __init__(self, parent):
@@ -11,7 +12,8 @@ class AssignmentPanel:
         self.button_panel_bottom = Frame(self.parent)
         self.btn_connect = None
         self.btn_show_metadata = None
-
+        self.shape_setup = ShapeSetup()
+        self.main_elements = MainElements()
 
     def create(self):
         self.button_panel_top.configure(background=Constants.BACKGROUND_COLOR)
@@ -54,8 +56,6 @@ class AssignmentPanel:
 
     # def on_enter(self):
 
-
-
     def configure_buttons(self):
 
         ttk.Style().configure("TButton", padding=2, relief=SUNKEN, background=Constants.BACKGROUND_COLOR, anchor=CENTER)
@@ -67,12 +67,17 @@ class AssignmentPanel:
         import os.path
         # print(os.path.exists(Constants.RUBBER))
         self.search_string = Entry(self.button_panel_bottom, width=6)
-        self.search_string.pack(side=LEFT, padx=(20,5))
+        self.search_string.insert(0, 0)
+        self.main_elements.entry_label = self.search_string
+        self.search_string.pack(side=LEFT, padx=(20, 5))
 
-        # img = ImageTk.PhotoImage(Image.open(Constants.RUBBER))
-        # self.btn_show_metadata = ttk.Button(self.button_panel_bottom, text="skontroluj", width=0, compound=CENTER)
-        # self.btn_show_metadata.image = img
-        # self.btn_show_metadata.pack(side=LEFT, padx=5)
+        img = ImageTk.PhotoImage(Image.open(Constants.RUBBER))
+        self.btn_show_metadata = ttk.Button(self.button_panel_bottom, text="Skontroluj", width=0, compound=CENTER,
+                                            command=lambda i=self.main_elements.current_task[0],
+                                                           j=self.main_elements.colors:
+                                            self.shape_setup.combinations(i, j))
+        self.btn_show_metadata.image = img
+        self.btn_show_metadata.pack(side=LEFT, padx=5)
         #ToolTip(self.btn_show_metadata, Constants.SHOW_METADATA)
 
         ttk.Separator(self.button_panel_bottom, orient=VERTICAL)\

@@ -2,7 +2,7 @@ from Shape import *
 from Constants import *
 from time import sleep
 
-DELAY = 0.05
+DELAY = 0.2
 
 
 class ShapeCreator:
@@ -28,15 +28,13 @@ class ShapeCreator:
 
         self.parent.update()
 
-    def print_map(self, map = None):
-        if not map:
-            map = self.playing_area_map
+    def print_map(self):
         pole = []
-        for row in range(len(map)):
+        for row in range(len(self.playing_area_map)):
             pole.append([])
-            for col in range(len(map[row])):
-                if map[row][col]:
-                    pole[row].append(map[row][col].name)
+            for col in range(len(self.playing_area_map[row])):
+                if self.playing_area_map[row][col]:
+                    pole[row].append(self.playing_area_map[row][col].name)
                 else:
                     pole[row].append(None)
         print(pole)
@@ -60,6 +58,7 @@ class ShapeCreator:
         self.parent.update()
 
     def move_template(self):
+
         self.set_shape_position(self.playing_area_row_template, self.playing_area_col_template + 1)
         x, y = self.template_coords
         self.template.move_shape(x, y)
@@ -92,7 +91,6 @@ class ShapeCreator:
     def compute_coords(self, col, row):
         x = CANVAS_BORDER + (self.width + SHAPE_BORDER) * col
         y = CANVAS_BORDER + (self.height + SHAPE_BORDER) * row
-
         return x, y
 
     def set_shape_position(self, _row, _col):
@@ -119,17 +117,22 @@ class ShapeCreator:
 
         return row, col
 
-    def add_new(self, shape=None):
+    def add_new(self):
 
         self.move_template()
         x, y = self.coords_for_new_shape
 
+<<<<<<< HEAD
         if not shape:
             shape = self.shape_type(self.parent, [x, y], self.height, self.width)
             shape.create()
         else:
             print('posun shape')
             shape.move_shape(x, y)
+=======
+        shape = self.shape_type(self.parent, [x, y], self.height, self.width)
+        shape.create()
+>>>>>>> 13f7be22374f7090e399a1b7cd03275fc414f6fc
 
         self.update_playing_area(shape)
 
@@ -180,6 +183,11 @@ class ShapeCreator:
                     self.move(row, col)
                     self.playing_area_col_template = col
                     self.playing_area_row_template = row
+<<<<<<< HEAD
+=======
+                else:
+                    return
+>>>>>>> 13f7be22374f7090e399a1b7cd03275fc414f6fc
 
     def move(self, row, col):
         shape = self.playing_area_map[row][col]
@@ -191,6 +199,7 @@ class ShapeCreator:
         sleep(DELAY)
         self.parent.update()
 
+<<<<<<< HEAD
     def scroll_map(self):
         ...
 
@@ -216,6 +225,8 @@ class ShapeCreator:
                     self.print_map()
                     self.parent.update()
 
+=======
+>>>>>>> 13f7be22374f7090e399a1b7cd03275fc414f6fc
 
 if __name__ == '__main__':
     p = Tk()
@@ -227,17 +238,17 @@ if __name__ == '__main__':
     c.pack(expand=YES, fill=BOTH, scrollregion=c.bbox(ALL))
     sc = ShapeCreator(c, Ball, BALL_HEIGHT, BALL_WIDTH)
     sc.create_template()
-    rr = sc.add_new()  # 1
-    jj = sc.add_new()  # 2
-    oo = sc.add_new()  # 3
-    pp = sc.add_new()  # 4
-    a = sc.add_new()  # 5
+    rr = sc.add_new() #1
+    jj = sc.add_new() #2
+    oo = sc.add_new() #3
+    pp = sc.add_new() #4
+    a = sc.add_new() #5
     sc.add_new()
     # sc.add_new()
     # sc.add_new()
     # sc.print_map()
     # print('pred zmazanim')
-    sc.remove(a)  # 5
+    sc.remove(a) #5
 
     sc.remove(rr)
     sc.remove(jj)
@@ -250,11 +261,6 @@ if __name__ == '__main__':
     ou = sc.add_new()
     sc.remove(ou)
 
-    sc.add_new()
-    sc.add_new()
-    sc.add_new()
-    sc.add_new()
-
     # sc.print_map()
 
     # b = sc.add_new()
@@ -265,7 +271,5 @@ if __name__ == '__main__':
     # sc.remove(b)
 
     # sc.print_map()
-    c.config(width = 500)
     c.update()
-    sc.resize_map()
     p.mainloop()

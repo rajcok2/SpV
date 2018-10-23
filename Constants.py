@@ -1,4 +1,4 @@
-# RUBBER = 'icons/rubber.png'
+RUBBER = 'icons/rubber.png'
 # LOGO = 'icons/logo.ico'
 BALL_WIDTH = 50
 BALL_HEIGHT = 50
@@ -35,18 +35,10 @@ FLAG = 'vlajočiek'
 MASCULINE = 'jeden nebude vyfarbený'
 FEMININE = 'jedna nebude vyfarbená'
 
+############ TASKS TEMPLATE ############
 
-def get_spaced_colors(n): # funkcia na generovanie dakych farieb
-    max_value = 16581375  # 255**3
-    interval = int(max_value / n)
-    colors = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
-    done_colors = [(int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
-    return "#%02x%02x%02x" % (done_colors[0]), "#%02x%02x%02x" % done_colors[1], "#%02x%02x%02x" % done_colors[2]
+TASKS = [['lopta', (1, 2)], ['lopta', (3, 4)],
+         ['lopta', (4, 6)], ['dom', (2, 2)],
+         ['dom', (3, 3)], ['vlajka', (2, 2)],
+         ['vlajka', (3, 3)], ['dom', (4, 5)]]
 
-
-print(get_spaced_colors(5))
-
-# otvorenie suboru a precitanie riadok po riadku
-# f = open("level.txt", "r")
-# for x in f:
-#   print(x.split())
