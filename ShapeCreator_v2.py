@@ -39,14 +39,12 @@ class ShapeCreator:
                     pole[row].append(None)
         print(pole)
 
-
     def print_col_and_row(self, text):
         print(text)
         print(self.playing_area_col,
               self.playing_area_row,
               self.playing_area_col_template,
               self.playing_area_row_template)
-
 
     def create_template(self):
         shape = self.shape_type(self.parent, self.template_coords, self.height, self.width)
@@ -60,7 +58,6 @@ class ShapeCreator:
         self.parent.update()
 
     def move_template(self):
-
         self.set_shape_position(self.playing_area_row_template, self.playing_area_col_template + 1)
         x, y = self.template_coords
         self.template.move_shape(x, y)
@@ -91,6 +88,7 @@ class ShapeCreator:
     def compute_coords(self, col, row):
         x = CANVAS_BORDER + (self.width + SHAPE_BORDER) * col
         y = CANVAS_BORDER + (self.height + SHAPE_BORDER) * row
+
         return x, y
 
     def set_shape_position(self, _row, _col):
@@ -165,9 +163,6 @@ class ShapeCreator:
                     next_row = row + 1
                     _col = 0
 
-                    if next_row == len(self.playing_area_map):
-                        return
-
                 self.playing_area_map[row][col], self.playing_area_map[next_row][next_col] = \
                     self.playing_area_map[next_row][next_col], self.playing_area_map[row][col]
 
@@ -199,17 +194,17 @@ if __name__ == '__main__':
     c.pack(expand=YES, fill=BOTH, scrollregion=c.bbox(ALL))
     sc = ShapeCreator(c, Ball, BALL_HEIGHT, BALL_WIDTH)
     sc.create_template()
-    rr = sc.add_new() #1
-    jj = sc.add_new() #2
-    oo = sc.add_new() #3
-    pp = sc.add_new() #4
-    a = sc.add_new() #5
+    rr = sc.add_new()  # 1
+    jj = sc.add_new()  # 2
+    oo = sc.add_new()  # 3
+    pp = sc.add_new()  # 4
+    a = sc.add_new()  # 5
     sc.add_new()
     # sc.add_new()
     # sc.add_new()
     # sc.print_map()
     # print('pred zmazanim')
-    sc.remove(a) #5
+    sc.remove(a)  # 5
 
     sc.remove(rr)
     sc.remove(jj)
@@ -221,6 +216,11 @@ if __name__ == '__main__':
 
     ou = sc.add_new()
     sc.remove(ou)
+
+    sc.add_new()
+    sc.add_new()
+    sc.add_new()
+    sc.add_new()
 
     # sc.print_map()
 
