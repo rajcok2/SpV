@@ -61,7 +61,7 @@ class ShapeCreator:
 
     def move_template(self):
 
-        self.set_shape_coords(self.playing_area_row_template, self.playing_area_col_template + 1)
+        self.set_shape_position(self.playing_area_row_template, self.playing_area_col_template + 1)
         x, y = self.template_coords
         self.template.move_shape(x, y)
 
@@ -77,10 +77,25 @@ class ShapeCreator:
         self.playing_area_map[self.playing_area_row][self.playing_area_col] = shape
         self.playing_area_map[self.playing_area_row_template][self.playing_area_col_template] = self.template
 
-    def set_shape_coords(self, _row, _col):
-        row, col = self.check_border(_row, _col)
+    def set_template_coords_after_removing(self):
+        template_row = 0
+        template_col = 0
+        for row in range(len(self.playing_area_map)):
+            for col in range(len(self.playing_area_map[row])):
+                if self.playing_area_map[row][col] == self.template:
+                    template_row = row
+                    template_col = col
+
+        self.template_coords[0], self.template_coords[1] = self.compute_coords(template_col, template_row)
+
+    def compute_coords(self, col, row):
         x = CANVAS_BORDER + (self.width + SHAPE_BORDER) * col
         y = CANVAS_BORDER + (self.height + SHAPE_BORDER) * row
+        return x, y
+
+    def set_shape_position(self, _row, _col):
+        row, col = self.check_border(_row, _col)
+        x, y = self.compute_coords(col, row)
 
         self.playing_area_col = _col - 1
         self.playing_area_row = _row
@@ -91,8 +106,6 @@ class ShapeCreator:
         self.coords_for_new_shape[1] = self.template_coords[1]
         self.template_coords[0] = x
         self.template_coords[1] = y
-
-        # return x, y
 
     def check_border(self, _row, _col):
         next_shape_space = CANVAS_BORDER + ((self.width + SHAPE_BORDER) * (_col + 1))
@@ -124,9 +137,6 @@ class ShapeCreator:
             return
 
         for row in range(len(self.playing_area_map)):
-            # print(row)
-            # if not self.playing_area_map[row]:
-            #     self.playing_area_map.pop()
             for col in range(len(self.playing_area_map[row])):
                 if self.playing_area_map[row][col] == shape:
 
@@ -134,15 +144,18 @@ class ShapeCreator:
                     self.rearrangement(row, col)
 
                     shape.delete_shape()          # dorobit pre kazdy
-                    # self.shape_setup.delete_object()
 
                     self.parent.update()
                     sleep(DELAY)
                     break
+        self.set_template_coords_after_removing()
 
     def rearrangement(self, _row=0, _col=0):
         for row in range(_row, len(self.playing_area_map)):
             for col in range(_col, len(self.playing_area_map[row])):
+
+                if row + 1 == len(self.playing_area_map) and col + 1 == len(self.playing_area_map[row]):
+                    return
 
                 next_col = col + 1
                 next_row = row
@@ -153,21 +166,17 @@ class ShapeCreator:
                     _col = 0
 
                     if next_row == len(self.playing_area_map):
-                        self.playing_area_row_template = previous_row
-                        self.playing_area_col_template = previous_col
-                        break
+                        return
 
                 self.playing_area_map[row][col], self.playing_area_map[next_row][next_col] = \
                     self.playing_area_map[next_row][next_col], self.playing_area_map[row][col]
 
                 if self.playing_area_map[row][col]:
                     self.move(row, col)
-                    previous_row = row
-                    previous_col = col
-                # else:
-                    # self.playing_area_row_template = row
-                    # self.playing_area_col_template = col
-                    # break
+                    self.playing_area_col_template = col
+                    self.playing_area_row_template = row
+                else:
+                    return
 
     def move(self, row, col):
         shape = self.playing_area_map[row][col]
@@ -192,29 +201,36 @@ if __name__ == '__main__':
     sc.create_template()
     rr = sc.add_new() #1
     jj = sc.add_new() #2
-    sc.add_new() #3
-    sc.add_new() #4
+    oo = sc.add_new() #3
+    pp = sc.add_new() #4
     a = sc.add_new() #5
-    # sc.add_new()
+    sc.add_new()
     # sc.add_new()
     # sc.add_new()
     # sc.print_map()
     # print('pred zmazanim')
     sc.remove(a) #5
+
     sc.remove(rr)
     sc.remove(jj)
-    # print('zmazany')
-    # sc.print_map()
-    # sc.add_new()
-    # sc.print_map()
-    # sc.add_new()
-    # sc.print_map()
+    sc.remove(oo)
+    sc.remove(pp)
+
     sc.add_new()
-    # sc.print_map()
-    b = sc.add_new()
     sc.add_new()
+
+    ou = sc.add_new()
+    sc.remove(ou)
+
     # sc.print_map()
-    sc.remove(b)
+
+    # b = sc.add_new()
+    # sc.add_new()
+
+    # sc.print_map()
+
+    # sc.remove(b)
+
     # sc.print_map()
     c.update()
     p.mainloop()
