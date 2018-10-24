@@ -114,7 +114,7 @@ class ShapeCreator:
         next_shape_width_space =  CANVAS_BORDER + ((self.height + SHAPE_BORDER) * (_row + 1))
 
         if self.parent.winfo_height() < next_shape_width_space:
-            print('')
+            print('ooooooo')
             self.parent.config(scrollregion=(0,0,300, 1000))
 
         return row, col
@@ -239,6 +239,10 @@ if __name__ == '__main__':
     sc.remove(a)
     o = sc.add_new()
     a = sc.add_new()
+
+    a = sc.add_new()
+    r = sc.add_new()
+    j = sc.add_new()
 
     # sc.remove(r)
     # sc.remove(j)
