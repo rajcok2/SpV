@@ -3,7 +3,7 @@ RUBBER = 'icons/rubber.png'
 BALL_WIDTH = 50
 BALL_HEIGHT = 50
 
-HOUSE_WIDTH = 120
+HOUSE_WIDTH = 100
 HOUSE_HEIGHT = 80
 
 FLAG_WIDTH = 100
@@ -40,6 +40,8 @@ HOUSE = 'domčekov'
 FLAG = 'vlajočiek'
 MASCULINE = 'jeden nebude vyfarbený'
 FEMININE = 'jedna nebude vyfarbená'
+
+RIGHT_ANSWERS = 'Správne odpovede: {}'
 
 ############ TASKS TEMPLATE ############
 

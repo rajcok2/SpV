@@ -11,6 +11,7 @@ class ToolsPanel(Frame):
 
     def __init__(self, parent):
         super().__init__(master=parent)
+        self.parent = parent
         self.buttons_panel = None
         self.active_button = None
         self.buttons = list()
@@ -18,10 +19,17 @@ class ToolsPanel(Frame):
         self.number_of_colors = None
         self.main_elements = MainElements()
 
+    def create_right_answers_label(self):
+        self.right_answers = Label(self, text=Constants.RIGHT_ANSWERS)
+        self.right_answers.config(pady=20, padx=5)
+        self.right_answers.pack()
+
     def create(self):
         self.configure(background=Constants.BACKGROUND_COLOR)
         self.pack(side=RIGHT, fill=BOTH, expand=FALSE)
         self.create_buttons()
+
+        self.create_right_answers_label()
 
     def get_down_frame(self):
         frame = Frame(self.buttons_panel,

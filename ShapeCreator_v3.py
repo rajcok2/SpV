@@ -152,6 +152,7 @@ class ShapeCreator:
                 if self.playing_area_map[row][col] == shape:
 
                     if self.shape_count == 1:
+                        ...
                         # funkcia na zmenu farby
                     self.shape_count -= 1
                     self.playing_area_map[row][col] = None
@@ -242,13 +243,13 @@ if __name__ == '__main__':
     # o = sc.add_new()
     # a = sc.add_new()
     #
+    sc.remove(r)
+    a = sc.add_new()
+    r = sc.add_new()
+    j = sc.add_new()
     # sc.remove(a)
-    # a = sc.add_new()
-    # r = sc.add_new()
-    # j = sc.add_new()
-    # # sc.remove(a)
-    # o = sc.add_new()
-    # a = sc.add_new()
+    o = sc.add_new()
+    a = sc.add_new()
     #
     # a = sc.add_new()
     # r = sc.add_new()
@@ -270,6 +271,6 @@ if __name__ == '__main__':
     # sc.remove(j)
     #
     # c.update()
-    # c.config(width = 800)
-    # sc.resize_map()
+    c.config(width = 800)
+    sc.resize_map()
     p.mainloop()
