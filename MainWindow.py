@@ -16,9 +16,9 @@ class MainWindow(Tk):
     def __init__(self):
         super().__init__()
         self.menu_panel = MenuPanel(self)
-        self.tools_panel = ToolsPanel(self)
         self.main_elements = MainElements()
         self.assignment_panel = AssignmentPanel(self)
+        self.tools_panel = ToolsPanel(self)
         self.playing_area_panel = PlayingAreaPanel(self)
         self.shape_creator = None
         self.shape_setup = ShapeSetup()

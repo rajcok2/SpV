@@ -51,7 +51,6 @@ class Plus:
 
 class Ball:
     def __init__(self, parent, coords, height, width):
-        print('vytvaram ball')
         self.oval = None
         self.parent = parent
         self.coords = coords
@@ -66,7 +65,6 @@ class Ball:
         self.template = None
 
     def delete_shape(self):
-        print('zmaze shape')
         self.parent.delete(self.oval)
         self.parent.update()
 
@@ -114,6 +112,8 @@ class House:
         print(self.coords[0], coords[1])
         print(self.center)
 
+        self.name = 'house'
+
     def create(self):
         x = self.coords[0]
         y = self.coords[1]
@@ -133,22 +133,42 @@ class House:
                                                   fill='white', outline='black',
                                                   tags=self.tag)
 
+    def move_shape(self, x, y):
+        self.parent.coords(self.house_1,
+                           x,                   y + self.house_1_height,
+                           x + self.width,      y + self.house_1_height,
+                           x + self.width / 2,  y)
+
+        left_x = x + 10
+        right_x = x - 10
+        self.parent.coords(self.house_2,
+                           left_x,                  y + self.house_1_height,
+                           left_x,                  y + self.house_2_height,
+                           right_x + self.width,    y + self.house_2_height,
+                           right_x + self.width,    y + self.house_1_height)
+
     def get_colors(self):
         self.house_1_color = self.parent.itemcget(self.house_1, 'fill')
         self.house_2_color = self.parent.itemcget(self.house_2, 'fill')
         self.house_colors = (self.house_1_color, self.house_2_color)
         return self.house_colors
 
-    def template(self):
+    def set_template(self):
         template = None
         if self.house_1 and self.house_2:
             plus = Plus(self.parent, self.center, self.width / 3)
             plus.create()
             template = Template(self.parent, self.house_1, self.house_2,
                                 plus.horizontal_line, plus.vertical_line)
+            self.name = 'template'
+            self.parent.itemconfig(self.house_1, tags='template')
+            self.parent.itemconfig(self.house_2, tags='template')
         return template
 
-
+    def delete_shape(self):
+        self.parent.delete(self.house_1)
+        self.parent.delete(self.house_2)
+        self.parent.update()
 
 
 class Flag:
@@ -166,6 +186,8 @@ class Flag:
         self.flag_colors = ()
         self.tag = 'flag' + str(random.randint(1000, 4000))
         self.center = [coords[0] + width / 2, coords[1] + height / 2]
+
+        self.name = 'flag'
 
     def create(self):
         x = self.coords[0]
@@ -195,10 +217,25 @@ class Flag:
                                                  fill='white', outline='black',
                                                  tags=self.tag)
 
-    # def is_clicked(self, p1):
-    #     x = self.coords[0]
-    #     y = self.coords[1]
-    #     return x <= p1[0] < x + self.width and y <= p1[1] < y + 3 * self.height / 3
+    def move_shape(self, x, y):
+        flag_height = self.height / 3
+        self.parent.coords(self.flag_1,
+                           x, y,
+                           x, y + flag_height,
+                           x + self.width, y + flag_height,
+                           x + self.width, y)
+        y += flag_height
+        self.parent.coords(self.flag_2,
+                           x, y,
+                           x, y + flag_height,
+                           x + self.width, y + flag_height,
+                           x + self.width, y)
+        y += flag_height
+        self.parent.coords(self.flag_3,
+                           x, y,
+                           x, y + flag_height,
+                           x + self.width, y + flag_height,
+                           x + self.width, y)
 
     def get_colors(self):
         self.flag_1_color = self.parent.itemcget(self.flag_1, 'fill')
@@ -208,124 +245,42 @@ class Flag:
                                 self.flag_3_color)
         return self.flag_colors
 
-    def template(self):
+    def set_template(self):
         template = None
         if self.flag_1 and self.flag_2 and self.flag_3:
             plus = Plus(self.parent, self.center, self.height / 2)
             plus.create()
             template = Template(self.parent, self.flag_1, self.flag_2, self.flag_3,
                                 plus.horizontal_line, plus.vertical_line)
+            self.name = 'template'
+            self.parent.itemconfig(self.flag_1, tags='template')
+            self.parent.itemconfig(self.flag_2, tags='template')
+            self.parent.itemconfig(self.flag_3, tags='template')
         return template
 
+    def delete_shape(self):
+        self.parent.delete(self.flag_1)
+        self.parent.delete(self.flag_2)
+        self.parent.delete(self.flag_3)
+        self.parent.update()
 
-class ShapeSetup:
-    def __init__(self):
-        self.canvas = None
-        self.template_clicked = False
-        self.objects = list()
-        self.main_elements = MainElements()
-        # self.tools_panel = ToolsPanel(self.main_elements.canvas)
-        # self.colors_used = self.tools_panel.generate_colors()
-        # self.object_shape = self.main_elements.current_task[0]
-        # self.shape_creator = ShapeCreator(self.main_elements.canvas, self.main_elements.shape_type,
-        #                                   self.main_elements.canvas.winfo_width(),
-        #                                   self.main_elements.canvas.winfo_height())  # shape type nastavime pri citani uloh
-
-    def add_object(obj):
-        objects.append(obj)
-        # obj.create()
-
-    # def iterate_objects_and_compare(ojb_shape):
-    #     right_colored = 0
-    #     used_options = []
-    #     com = combinations(obj_shape, self.main_elements.colors)
-    #     for o in objects:
-    #         print(o.get_colors())
-    #         for i in range(len(com)):
-    #             if (o.get_colors() == com[i]) and (com[i] not in used_options):
-    #                 right_colored += 1
-    #                 used_options.append(com[i])
-    #
-    #     if len(com) == right_colored and len(com) == len(objects):
-    #         print('Trafil si vsetky spravne kombinacie')
-    #     else:
-    #         print('Netrafil si vsetky spravne kombinacie')
-
-    def click(self, event):
-        " po kliknuti na template chceme aby sa pridal novy prazdny objekt a vsetko sa posunulo doprava"
-        token, a = self.canvas.itemcget(CURRENT, 'tags').split()
-        if token.strip() == 'template':
-            self.template_clicked = True
-            print('klikol si na template')
-            print('toto je main_array =====> ', self.main_elements.main_array)
-            self.shape_creator.add_new()  # zavola pridanie noveho shapu a posunie template
-        elif self.canvas.find_withtag(CURRENT):
-            self.canvas.itemconfig(CURRENT, fill=self.main_elements.color)
-            self.check_colored_objects()
-            # print(c.itemcget(CURRENT, 'fill'))  # => Returns color of object
-            # print(c.itemcget(CURRENT, 'tags'))
-            # print(c.itemconfigure(CURRENT))
-
-    def check_colored_objects(self):
-        print(self.main_elements.main_array)
-        #  1.prejde prvky hl.pola a zisti kolko objektov je zafarbenych
-        #  2.nasledne zvysi/znizi cislo v Entry
-
-    def delete_object(self, event):
-        token, a = self.canvas.itemcget(CURRENT, 'tags').split()
-        print(token, a)
-        if token.strip() == 'template':
-            print('chces zmazat template')
-        elif token.strip() in self.canvas.gettags(self.canvas.find_withtag(CURRENT)):
-            self.canvas.delete(token.strip())
-            self.check_colored_objects()
-
-    def combinations(self, object_shape, colors_used):
-        if object_shape == 'lopta':
-            print('vosiel som do lopty a toto su farby', colors_used)
-            p = [p for p in itertools.product(colors_used, repeat=1)]
-        elif object_shape == 'dom':
-            p = [p for p in itertools.product(colors_used, repeat=2)]
-        elif object_shape == 'vlajka':
-            p = [p for p in itertools.product(colors_used, repeat=3)]
-        else:
-            return
-        print('toto su vsetky kombinacie: ', len(p), p)
-        if len(p) == int(self.main_elements.entry_label.get()):
-            print('uhadol si vsetky spravne moznosti')
-            #  teraz vsetko vynuluj a nastav dalsiu ulohu
-            self.main_elements.current_task_number += 1
-            if self.main_elements.current_task_number <= 7:
-                self.main_elements.current_task = TASKS[self.main_elements.current_task_number]
-                # print(self.main_elements.current_task)
-                #  nastav vsetko na novu ulohu
-            else:
-                #  dokoncil vsetky ulohy
-                return
-        else:
-            print('NE-uhadol si vsetky spravne moznosti')
-
-    def set_binds(self):
-        self.canvas.bind("<Button-1>", self.click)
-        # self.canvas.bind("<Button-2>", self.iterate_objects_and_compare)
-        self.canvas.bind("<Button-3>", self.delete_object)
 
 if __name__ == '__main__':
     p = Tk()
     frame = Frame(p)
     frame.pack(side=BOTTOM, fill=BOTH, expand=TRUE)
     c = Canvas(frame, bg="white", relief=SUNKEN)
-    c.bind("<Button-1>", click)
-    c.bind("<Button-2>", iterate_objects_and_compare)
-    c.bind("<Button-3>", delete_object)
+    # c.bind("<Button-1>", click)
+    # c.bind("<Button-2>", iterate_objects_and_compare)
+    # c.bind("<Button-3>", delete_object)
     c.config(scrollregion=(0, 0, 300, 1000))
     c.config(highlightthickness=0)
     c.pack(expand=YES, fill=BOTH, scrollregion=c.bbox(ALL))
     objects = []
-    add_object(House(c, [40, 40], 120, 80))
-    add_object(House(c, [40, 160], 120, 80))
-    add_object(House(c, [140, 40], 120, 80))
-    add_object(House(c, [140, 160], 120, 80))
+    # add_object(House(c, [40, 40], 120, 80))
+    # add_object(House(c, [40, 160], 120, 80))
+    # add_object(House(c, [140, 40], 120, 80))
+    # add_object(House(c, [140, 160], 120, 80))
     # add_object(Ball(c, [140, 40], 50))
     # add_object(Ball(c, [80, 40], 50))
     # add_object(Flag(c, [40, 140], 60, 100))
@@ -339,7 +294,7 @@ if __name__ == '__main__':
     # f = Flag(c, [40, 40], 60, 100)
     # f.create()
     # f.template()
-    h = House(c, [40, 40], 120, 80)
-    h.create()
-    h.template()
+    # h = House(c, [40, 40], 120, 80)
+    # h.create()
+    # h.template()
     p.mainloop()

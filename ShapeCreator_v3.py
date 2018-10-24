@@ -27,6 +27,8 @@ class ShapeCreator:
         self.shape_setup = None
 
         self.parent.update()
+        self.create_template()
+        self.add_new()
 
     def print_map(self, map=None):
         if not map:
@@ -220,33 +222,36 @@ if __name__ == '__main__':
     p = Tk()
     frame = Frame(p)
     frame.pack(side=BOTTOM, fill=BOTH, expand=TRUE)
-    c = Canvas(frame, width=270, height=300, bg="white", relief=SUNKEN)
+    c = Canvas(frame, width=500, height=300, bg="white", relief=SUNKEN)
     c.config(scrollregion=(0, 0, 300, 1000))
     c.config(highlightthickness=0)
+
     c.pack(expand=YES, fill=BOTH, scrollregion=c.bbox(ALL))
-    sc = ShapeCreator(c, Ball, BALL_HEIGHT, BALL_WIDTH)
-    sc.create_template()
-
+    # sc = ShapeCreator(c, Ball, BALL_HEIGHT, BALL_WIDTH)
+    sc = ShapeCreator(c, House, HOUSE_HEIGHT, HOUSE_WIDTH)
+    # sc = ShapeCreator(c, Flag, FLAG_HEIGHT, FLAG_WIDTH)
+    # sc.create_template()
     r = sc.add_new()
+
     j = sc.add_new()
     o = sc.add_new()
     a = sc.add_new()
+    #
+    # sc.remove(a)
+    # a = sc.add_new()
+    # r = sc.add_new()
+    # j = sc.add_new()
+    # # sc.remove(a)
+    # o = sc.add_new()
+    # a = sc.add_new()
+    #
+    # a = sc.add_new()
+    # r = sc.add_new()
+    # j = sc.add_new()
 
-    sc.remove(a)
-    a = sc.add_new()
-    r = sc.add_new()
-    j = sc.add_new()
-    sc.remove(a)
-    o = sc.add_new()
-    a = sc.add_new()
-
-    a = sc.add_new()
-    r = sc.add_new()
-    j = sc.add_new()
-
-    # sc.remove(r)
-    # sc.remove(j)
-    # sc.remove(o)
+    sc.remove(r)
+    sc.remove(j)
+    sc.remove(o)
 
     # sc.add_new()
     # sc.add_new()
@@ -260,6 +265,6 @@ if __name__ == '__main__':
     # sc.remove(j)
     #
     # c.update()
-    c.config(width = 500)
-    sc.resize_map()
+    # c.config(width = 800)
+    # sc.resize_map()
     p.mainloop()
