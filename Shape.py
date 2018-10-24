@@ -51,6 +51,7 @@ class Plus:
 
 class Ball:
     def __init__(self, parent, coords, height, width):
+        print('vytvaram ball')
         self.oval = None
         self.parent = parent
         self.coords = coords
@@ -60,20 +61,22 @@ class Ball:
         self.radius = width / 2
         self.center = [coords[0] + width / 2, coords[1] + width / 2]
         self.ball_color = None
-        self.tag = 'ball' + str(random.randint(1000, 4000))
+        # self.tag = 'ball' + str(random.randint(1000, 4000))
         self.name = 'ball'
         self.template = None
 
     def delete_shape(self):
+        print('zmaze shape')
         self.parent.delete(self.oval)
+        self.parent.update()
 
     def create(self):
         x = self.coords[0]
         y = self.coords[1]
         self.oval = self.parent.create_oval(x, y,
                                             x + self.diameter, y + self.diameter,
-                                            fill='white', outline='black',
-                                            tags=self.tag)
+                                            fill='white', outline='black')
+                                            # tags=self.tag)
 
     def move_shape(self, x, y):
         self.parent.coords(self.oval, x, y, x + self.diameter, y + self.diameter)
@@ -118,8 +121,8 @@ class House:
         self.house_1 = self.parent.create_polygon(x, y + self.house_1_height,
                                                   x + self.width, y + self.house_1_height,
                                                   x + self.width / 2, y,
-                                                  fill='white', outline='black',
-                                                  tags=self.tag)
+                                                  fill='white', outline='black')
+                                                  # tags=self.tag)
 
         left_x = self.coords[0] + 10
         right_x = self.coords[0] - 10

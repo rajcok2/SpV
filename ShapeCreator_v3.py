@@ -2,7 +2,7 @@ from Shape import *
 from Constants import *
 from time import sleep
 
-DELAY = 0.2
+DELAY = 0.05
 
 
 class ShapeCreator:
@@ -41,13 +41,6 @@ class ShapeCreator:
                 else:
                     playing_area[row].append(None)
         print(playing_area)
-
-    def print_col_and_row(self, text):
-        print(text)
-        print(self.playing_area_col,
-              self.playing_area_row,
-              self.playing_area_col_template,
-              self.playing_area_row_template)
 
     def create_template(self):
         shape = self.shape_type(self.parent, self.template_coords, self.height, self.width)
@@ -131,9 +124,6 @@ class ShapeCreator:
         else:
             shape.move_shape(x, y)
 
-        shape = self.shape_type(self.parent, [x, y], self.height, self.width)
-        shape.create()
-
         self.update_playing_area(shape)
 
         print('po pridani')
@@ -153,18 +143,14 @@ class ShapeCreator:
 
                     self.playing_area_map[row][col] = None
 
-                    print('riadok pred zmazanim shape', shape)
-
-                    self.parent.delete(shape.oval)
                     shape.delete_shape()  # dorobit pre kazdy
 
+                    self.rearrangement(row, col)
                     self.parent.update()
-                    # self.rearrangement(row, col)
-
-                    # sleep(DELAY)
+                    sleep(DELAY)
                     break
 
-        # self.set_template_coords_after_removing()
+        self.set_template_coords_after_removing()
         self.parent.update()
 
         print('po zmazani')
@@ -206,30 +192,22 @@ class ShapeCreator:
         sleep(DELAY)
         self.parent.update()
 
-    # def scroll_map(self):
-    #     ...
+    def resize_map(self):
+        old_map = self.playing_area_map[:]
 
-    # def resize_map(self):
-    #     old_map = self.playing_area_map[:]
-    #     # self.playing_area_map = [[self.template]]
-    #
-    #     self.playing_area_map = [[None]]
-    #     self.playing_area_row = 0
-    #     self.playing_area_col = 0
-    #     self.playing_area_row_template = 0
-    #     self.playing_area_col_template = 0
-    #     self.template_coords = [SHAPE_BORDER, SHAPE_BORDER]
-    #     self.coords_for_new_shape = [0, 0]
-    #
-    #     print('stara mapa')
-    #     self.print_map(old_map)
-    #     print('nova mapa')
-    #     for row in range(len(old_map)):
-    #         for col in range(len(old_map[row])):
-    #             if old_map[row][col] and old_map[row][col] is not self.template:
-    #                 self.add_new(old_map[row][col])
-    #                 # self.print_map()
-    #                 self.parent.update()
+        self.playing_area_map = [[None]]
+        self.playing_area_row = 0
+        self.playing_area_col = 0
+        self.playing_area_row_template = 0
+        self.playing_area_col_template = 0
+        self.template_coords = [SHAPE_BORDER, SHAPE_BORDER]
+        self.coords_for_new_shape = [0, 0]
+
+        for row in range(len(old_map)):
+            for col in range(len(old_map[row])):
+                if old_map[row][col] and old_map[row][col] is not self.template:
+                    self.add_new(old_map[row][col])
+        self.parent.update()
 
 
 if __name__ == '__main__':
@@ -243,18 +221,18 @@ if __name__ == '__main__':
     sc = ShapeCreator(c, Ball, BALL_HEIGHT, BALL_WIDTH)
     sc.create_template()
 
-    # r = sc.add_new()
-    # j = sc.add_new()
-    # o = sc.add_new()
+    r = sc.add_new()
+    j = sc.add_new()
+    o = sc.add_new()
     a = sc.add_new()
 
     sc.remove(a)
-    # a = sc.add_new()
-    # r = sc.add_new()
-    # j = sc.add_new()
-    # sc.remove(a)
-    # o = sc.add_new()
-    # a = sc.add_new()
+    a = sc.add_new()
+    r = sc.add_new()
+    j = sc.add_new()
+    sc.remove(a)
+    o = sc.add_new()
+    a = sc.add_new()
 
     # sc.remove(r)
     # sc.remove(j)
@@ -272,6 +250,6 @@ if __name__ == '__main__':
     # sc.remove(j)
     #
     # c.update()
-    # c.config(width = 500)
-    # sc.resize_map()
+    c.config(width = 500)
+    sc.resize_map()
     p.mainloop()
