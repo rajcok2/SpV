@@ -15,6 +15,7 @@ class ShapeCreator:
         self.canvas_width = parent.winfo_width()
         self.canvas_height = parent.winfo_height()
         self.scrollbar = ...
+        self.shape_count = 0
 
         self.playing_area_map = [[None]]
         self.playing_area_row = 0
@@ -122,7 +123,7 @@ class ShapeCreator:
         return row, col
 
     def add_new(self, shape=None):
-
+        self.shape_count += 1
         self.move_template()
         x, y = self.coords_for_new_shape
 
@@ -134,11 +135,12 @@ class ShapeCreator:
 
         self.update_playing_area(shape)
 
-        print('po pridani')
-        self.print_map()
+        # print('po pridani')
+        # self.print_map()
 
         self.parent.update()
         sleep(DELAY)
+        print('counter', self.shape_count)
         return shape
 
     def remove(self, shape):
@@ -149,6 +151,9 @@ class ShapeCreator:
             for col in range(len(self.playing_area_map[row])):
                 if self.playing_area_map[row][col] == shape:
 
+                    if self.shape_count == 1:
+                        # funkcia na zmenu farby
+                    self.shape_count -= 1
                     self.playing_area_map[row][col] = None
 
                     shape.delete_shape()  # dorobit pre kazdy
@@ -161,9 +166,9 @@ class ShapeCreator:
         self.set_template_coords_after_removing()
         self.parent.update()
 
-        print('po zmazani')
-        self.print_map()
-        print(self.coords_for_new_shape)
+        # print('po zmazani')
+        # self.print_map()
+        # print(self.coords_for_new_shape)
 
     def rearrangement(self, _row=0, _col=0):
         for row in range(_row, len(self.playing_area_map)):
@@ -233,9 +238,9 @@ if __name__ == '__main__':
     # sc.create_template()
     r = sc.add_new()
 
-    j = sc.add_new()
-    o = sc.add_new()
-    a = sc.add_new()
+    # j = sc.add_new()
+    # o = sc.add_new()
+    # a = sc.add_new()
     #
     # sc.remove(a)
     # a = sc.add_new()
@@ -249,9 +254,9 @@ if __name__ == '__main__':
     # r = sc.add_new()
     # j = sc.add_new()
 
-    sc.remove(r)
-    sc.remove(j)
-    sc.remove(o)
+    # sc.remove(r)
+    # sc.remove(j)
+    # sc.remove(o)
 
     # sc.add_new()
     # sc.add_new()

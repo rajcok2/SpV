@@ -2,7 +2,7 @@ from tkinter import ttk
 from tkinter import *
 from PIL import Image, ImageTk
 import Constants
-from Shape import ShapeSetup
+from ShapeSetup import ShapeSetup
 from MainElements import *
 
 class AssignmentPanel:

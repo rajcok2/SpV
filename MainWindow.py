@@ -9,6 +9,7 @@ from Constants import *
 from ShapeCreator_v2 import ShapeCreator
 from MainElements import *
 from Shape import *
+from ShapeSetup import ShapeSetup
 
 
 class MainWindow(Tk):
@@ -16,10 +17,11 @@ class MainWindow(Tk):
     def __init__(self):
         super().__init__()
         self.menu_panel = MenuPanel(self)
-        self.main_elements = MainElements()
         self.assignment_panel = AssignmentPanel(self)
-        self.tools_panel = ToolsPanel(self)
         self.playing_area_panel = PlayingAreaPanel(self)
+        self.tools_panel = ToolsPanel(self)
+        self.main_elements = MainElements()
+
         self.shape_creator = None
         self.shape_setup = ShapeSetup()
         self.playing_area_panel.shape_setup = self.shape_setup
@@ -27,6 +29,7 @@ class MainWindow(Tk):
     def create(self):
         self.configure_main_window()
         self.menu_panel.create()
+        self.assignment_panel.create()
         self.tools_panel.create()
         self.playing_area_panel.create()
         self.playing_area_panel.shape_setup = self.shape_setup
@@ -36,7 +39,7 @@ class MainWindow(Tk):
         self.shape_creator.create_template()
         self.shape_creator.add_new()
         self.shape_creator.shape_setup = self.shape_setup
-        self.assignment_panel.create()
+
 
     def configure_main_window(self):
         self.title(APP_NAME)
