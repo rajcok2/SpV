@@ -104,12 +104,18 @@ class ShapeCreator:
         self.template_coords[1] = y
 
     def check_border(self, _row, _col):
-        next_shape_space = CANVAS_BORDER + ((self.width + SHAPE_BORDER) * (_col + 1))
+        next_shape_width_space = CANVAS_BORDER + ((self.width + SHAPE_BORDER) * (_col + 1))
         row = _row
         col = _col
-        if next_shape_space > self.parent.winfo_width():
+        if next_shape_width_space > self.parent.winfo_width():
             row += 1
             col = 0
+
+        next_shape_width_space =  CANVAS_BORDER + ((self.height + SHAPE_BORDER) * (_row + 1))
+
+        if self.parent.winfo_height() < next_shape_width_space:
+            print('')
+            self.parent.config(scrollregion=(0,0,300, 1000))
 
         return row, col
 
